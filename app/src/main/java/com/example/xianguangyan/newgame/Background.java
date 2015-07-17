@@ -7,15 +7,19 @@ import android.graphics.Canvas;
  * Created by Derek on 7/16/2015.
  */
 public class Background {
-    private Bitmap image;
+    private Bitmap image0;
+    private Bitmap image1;
     private int rows;
     private int cols;
     private int x,y;
     private int size = 216;
 
-    public Background(Bitmap img)
+    public Background(Bitmap img0, Bitmap img1)
     {
-        image = img.createScaledBitmap(img, 216, 216, false);
+        image0 = img0;
+        image1 = img1;
+        image0 = image0.createScaledBitmap(img0, 216, 216, false);
+        image1 = image1.createScaledBitmap(img1, 216, 216, false);
         rows = 7;
         cols = 5;
     }
@@ -29,7 +33,7 @@ public class Background {
     {
         for(int row = 0; row < rows; row++) {
             for(int col = 0; col < cols; col ++) {
-                canvas.drawBitmap(image, 150 + (col * size), 150 + (row * size), null);
+                canvas.drawBitmap(image0, 150 + (col * size), 150 + (row * size), null);
             }
         }
 

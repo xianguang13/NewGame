@@ -8,11 +8,16 @@ import android.graphics.Canvas;
  */
 public class Background {
     private Bitmap image;
+    private int rows;
+    private int cols;
     private int x,y;
+    private int size = 216;
 
     public Background(Bitmap img)
     {
-        image = img;
+        image = img.createScaledBitmap(img, 216, 216, false);
+        rows = 7;
+        cols = 5;
     }
 
     public void update()
@@ -22,6 +27,11 @@ public class Background {
 
     public void draw(Canvas canvas)
     {
-        canvas.drawBitmap(image, x, y, null);
+        for(int row = 0; row < rows; row++) {
+            for(int col = 0; col < cols; col ++) {
+                canvas.drawBitmap(image, 150 + (col * size), 150 + (row * size), null);
+            }
+        }
+
     }
 }

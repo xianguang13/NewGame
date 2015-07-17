@@ -18,8 +18,8 @@ public class Background {
     {
         image0 = img0;
         image1 = img1;
-        image0 = image0.createScaledBitmap(img0, 216, 216, false);
-        image1 = image1.createScaledBitmap(img1, 216, 216, false);
+        image0 = image0.createScaledBitmap(image0, 216, 216, false);
+        image1 = image1.createScaledBitmap(image1, 216, 216, false);
         rows = 7;
         cols = 5;
     }

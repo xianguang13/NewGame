@@ -1,20 +1,25 @@
 package com.example.xianguangyan.newgame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Derek on 7/16/2015.
  */
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    public static final int WIDTH = 1380;
-    public static final int HEIGHT = 1812;
+    public static final int WIDTH = 1080;
+    public static final int HEIGHT = 1920;
     private MainThread thread;
     private Background bg;
+    private Grid grid;
+    private ArrayList<Bitmap> images;
     public GamePanel(Context context)
     {
         super(context);
@@ -25,6 +30,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
         //make gamePanel focusable so it can handle events
         setFocusable(true);
+        images = new ArrayList<Bitmap>();
+        images.add(BitmapFactory.decodeResource(getResources(), R.drawable.tile0));
+        images.add(BitmapFactory.decodeResource(getResources(), R.drawable.tile1));
+
+
     }
 
     @Override
@@ -37,20 +47,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     {
         // Attempts to block the thread might require multiple tries
         boolean retry = true;
-        while(retry) {
+        int counter = 0;
+        while(retry && counter < 1000) {
             try {
                 thread.join();
+                retry = false;
             }catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry = false;
         }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.tile0),BitmapFactory.decodeResource(getResources(), R.drawable.tile1));
+        bg = new Background();
+        grid = new Grid(images);
         //Safely starts the game loop
         thread.setRunning(true);
         thread.start();
@@ -59,12 +71,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            float x = event.getX();
+            float y = event.getY();
+            System.out.println("X at: " + x*event.getXPrecision() + "Y at: " + y*event.getYPrecision() );
+            grid.touchRespond(x, y);
+            return true;
+        }
         return super.onTouchEvent(event);
     }
 
     public void update()
     {
         bg.update();
+        grid.update();
         thread.update();
     }
 
@@ -81,8 +102,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             final int savedState = canvas.save();
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
-            canvas.restoreToCount(savedState); //prevents scaling loop with a save
+            grid.draw(canvas);
             thread.draw(canvas);
+            canvas.restoreToCount(savedState); //prevents scaling loop with a save
+
         }
     }
 

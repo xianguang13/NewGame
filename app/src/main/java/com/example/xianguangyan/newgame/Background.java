@@ -2,6 +2,8 @@ package com.example.xianguangyan.newgame;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 /**
  * Created by Derek on 7/16/2015.
@@ -9,19 +11,16 @@ import android.graphics.Canvas;
 public class Background {
     private Bitmap image0;
     private Bitmap image1;
-    private int rows;
-    private int cols;
-    private int x,y;
-    private int size = 216;
+    private int size = 196;
+    public static final int xMargin = 50;
+    public static final int yMargin = 50;
+    private Paint paint;
 
-    public Background(Bitmap img0, Bitmap img1)
+    public Background()
     {
-        image0 = img0;
-        image1 = img1;
-        image0 = image0.createScaledBitmap(image0, 216, 216, false);
-        image1 = image1.createScaledBitmap(image1, 216, 216, false);
-        rows = 7;
-        cols = 5;
+        paint = new Paint();
+        paint.setColor(Color.GRAY);
+        paint.setStyle(Paint.Style.FILL);
     }
 
     public void update()
@@ -31,11 +30,6 @@ public class Background {
 
     public void draw(Canvas canvas)
     {
-        for(int row = 0; row < rows; row++) {
-            for(int col = 0; col < cols; col ++) {
-                canvas.drawBitmap(image0, 150 + (col * size), 150 + (row * size), null);
-            }
-        }
-
+        canvas.drawRect(0,0,1080,1920,paint);
     }
 }

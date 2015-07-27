@@ -24,8 +24,8 @@ public class MainThread extends Thread {
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
         //sets text color
-        paint.setColor(Color.BLUE);
-        paint.setTextSize(24);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(20);
 
     }
 
@@ -50,7 +50,7 @@ public class MainThread extends Thread {
                     this.gamePanel.update();
                     this.gamePanel.draw(canvas);
                 }
-            }catch (Exception e) {}
+            } catch (Exception e) {}
             finally {
                 if (canvas != null) {
                     try {
